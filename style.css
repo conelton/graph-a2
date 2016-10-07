@@ -1,0 +1,167 @@
+/* remove margins from the page */
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* set the default font */
+body {
+  font-family: sans-serif;
+}
+
+/* input/interactive elements */
+input:not([type="checkbox"], [type="radio"]), textarea, button, select {
+  padding: 0.3em 0.5em;
+  border: 1px solid #BBB;
+  border-radius: 2px;
+}
+/* large text boxes */
+textarea {
+  width: 300px;
+  height: 100px;
+}
+/* input labels */
+label {
+  padding-right: 1em;
+}
+/* button elements */
+button {
+  height: 2em;
+  border: none;
+  border-radius: 1px;
+  background-color: #27B;
+  color: white;
+  vertical-align: middle;
+  cursor: pointer;
+}
+button.positive {
+  background-color: #292;
+}
+button.negative {
+  background-color: #B22;
+}
+button:active {
+  color: black;
+}
+
+/* list elements */
+ol, ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+li {
+  margin: 1em 0;
+  padding: 0;
+}
+
+/* elements not shown */
+.hidden {
+  display: none;
+}
+
+/* colour samples */
+.swatch {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  margin: 0 0.5em;
+}
+
+/* text containgin mathematical notation */
+.math, .equation {
+  font-size: 120%;
+  font-family: monospace;
+  letter-spacing: 0.2em;
+}
+
+/* elements relating to the graph */
+#ctnGraph {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+.graphCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* elements floating over the graph containing controls */
+.panel {
+  position: fixed;
+  padding: 0.5em;
+  margin: 1em;
+  border: 1px solid #BBB;
+  background-color: white;
+}
+
+/* semi-transparent element displayed over the UI containing a popup */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+/* individual popup elements */
+.popup {
+  width: 40%;
+  min-width: 600px;
+  max-width: 800px;
+  margin: 1em auto;
+  padding: 1em;
+  border: 1px solid #BBB;
+  background-color: white;
+}
+/* buttons at the bottom of popups */
+.popupControls {
+  margin-top: 1em;
+  padding-top: 0.5em;
+  text-align: right;
+  border-top: 1px solid #BBB;
+}
+
+/* position the various panels */
+#pnlEquations {
+  top: 0;
+  left: 0;
+}
+#pnlViewControls {
+  top: 0;
+  right: 0;
+}
+#pnlEquationOptions {
+  bottom: 0;
+  left: 0;
+}
+
+/* style the equation list */
+#lstEquationList {
+  padding: 1em 0;
+}
+/* add placeholder text to empty equation list */
+#lstEquationList:empty::after {
+  content: "No equations";
+  display: block;
+  font-weight: bold;
+  color: red;
+}
+/* v-align children of items in the equation list */
+.itmEquationListItem * {
+  vertical-align: middle;
+}
+
+/* icons within buttons */
+button img {
+  vertical-align: baseline;
+  padding: 2px 2px 0 2px;
+}

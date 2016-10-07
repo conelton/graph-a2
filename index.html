@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    
+    <meta charset="utf-8">
+  
+    <title>Project Prototype 1</title>
+    
+    <!-- inport script for validation -->
+    <script src="validation.js"></script>
+    <!-- import script for equation input -->
+    <script src="equation_input.js"></script>
+    <!-- import script for graph plotting -->
+    <script src="graph.js"></script>
+    <!-- import scripts for UI -->
+    <script src="ui.js"></script>
+    <!-- import core routines (common unit) -->
+    <script src="core.js"></script>
+    
+    <!-- load CSS stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    
+  </head>
+  
+  <body>
+    
+    <!-- container for canvas elements -->
+    <div id="ctnGraph"></div>
+    
+    <!-- panel containing equation list (top left) -->
+    <div class="panel" id="pnlEquations">
+      <button id="btnExportEquations">Export</button>
+      <button id="btnImportEquations">Import</button>
+      <ul id="lstEquationList"></ul>
+      <button class="positive" id="btnAddEquation">
+        <img src="plus.png">
+      </button>
+    </div>
+    
+    <!-- panel containing controls for the view (top right) -->
+    <div class="panel" id="pnlViewControls">
+      <button id="btnZoomIn">
+        <img src="zoom_in.png">
+      </button>
+      <button id="btnZoomOut">
+        <img src="zoom_out.png">
+      </button>
+      <button id="btnCustomScale">Custom Scale</button>
+      <button id="btnResetView">Reset</button>
+      <button id="btnSaveImage">Save image</button>
+      <button id="btnHelp">HELP</button>
+    </div>
+    
+    <!-- container for popup elemnts -->
+    <!-- popups are cloned from here into the overlay -->
+    <div class="hidden" id="ctnPopups">
+      
+      <!-- !Add New Equation" popup -->
+      <div class="popup" id="popAddEquation">
+      
+        <h1>Add New Equation</h1>
+        
+        <form id="frmAddEquation" novalidate>
+        
+          <table>
+          
+            <tr>
+              <td style="text-align: right;">
+                <label for="inpNewEquation" class="math">y=</label>
+              </td>
+              <td>
+                <input id="inpNewEquation">
+              </td>
+            </tr>
+            
+            <tr>
+              <td>
+                <label for="slcNewEquationColor">Color</label>
+              </td>
+              <td>
+                <select id="slcNewEquationColor"></select>
+              </td>
+            </tr>
+            
+          </table>
+          
+          <div class="popupControls">
+            <button type="submit" class="positive" id="btnSubmitAddEquation">Add</button>
+            <button type="button" class="negative" id="btnCancelAddEquation">Cancel</button>
+          </div>
+            
+        </form>
+        
+      </div>
+      
+      <!-- "Custom Scale" popup" -->
+      <div class="popup" id="popCustomScale">
+        
+        <h1>Set Custom Scale</h1>
+        
+        <form id="frmCustomScale" novalidate>
+          
+          <table>
+            <tbody>
+              <tr>
+                <td>
+                  <label for="inpCustomScaleMinX">Min. x</label>
+                </td>
+                <td>
+                  <input type="number" id="inpCustomScaleMinX">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label for="inpCustomScaleMaxX">Max. x</label>
+                </td>
+                <td>
+                  <input type="number" id="inpCustomScaleMaxX">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label for="inpCustomScaleMinY">Min. y</label>
+                </td>
+                <td>
+                  <input type="number" id="inpCustomScaleMinY">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <label for="inpCustomScaleMaxY">Max. y</label>
+                </td>
+                <td>
+                  <input type="number" id="inpCustomScaleMaxY">
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          
+          <div class="popupControls">
+            <button type="submit" class="positive" id="btnCustomScaleSubmit">Set</button>
+            <button type="button" class="negative" id="btnCustomScaleCancel">Cancel</button>
+          </div>
+          
+        </form>
+        
+      </div>
+      
+      <!-- "Import Equations" popup -->
+      <div class="popup" id="popImportEquations">
+        
+        <h1>Import Equations</h1>
+        
+        <form id="frmImportEquations">
+          
+          <p>
+            <label for="inpImportFile">Paste contents of "equations.json" below:</label>
+          </p>
+          <textarea id="inpImportFile"></textarea>
+          
+          <div class="popupControls">
+            <button type="submit" class="positive" id="btnImportSubmit">Import</button>
+            <button type="button" class="negative" id="btnImportCancel">Cancel</button>
+          </div>
+          
+        </form>
+        
+      </div>
+      
+      <!-- "Export Equations" popup -->
+      <div class="popup" id="popExportEquations">
+        
+        <h1>Export Equations</h1>
+        
+        <p>
+          <label for="inpExportFile">Copy this text to save or send your equations:</label>
+        </p>
+        <textarea id="inpExportFile"></textarea>
+        
+        <div class="popupControls">
+          <button id="btnExportClose">Done</button>
+        </div>
+        
+      </div>
+      
+      <!-- "Save Image" popup -->
+      <div class="popup" id="popSaveImage">
+        
+        <h1>Save Image</h1>
+        
+        <a id="lnkSaveImage" download="graph.png">Right-click the link and select 'Save target as...':</a>
+        
+        <div class="popupControls">
+          <button id="btnSaveImageClose">Done</button>
+        </div>
+        
+      </div>
+      
+      <!-- "Help" popup" -->
+      <div class="popup" id="popHelp">
+        
+        <h1>Help</h1>
+        
+        <h3>Controlling the View</h2>
+        <ul>
+          <li>Click and drag with the mouse to pan around the graph.</li>
+          <li>To zoom, use your scroll wheel or the zoom buttons.</li>
+          <li>To reset the view back to it's original position, click 'Reset'.</li>
+        </ul>
+        
+        <h3>Working With Equations</h2>
+        <ul>
+          <li>Click the green '+' to add an equation to the graph.</li>
+          <li>Click the red 'x' next to an equation to remove it.</li>
+          <li>Use the checkbox next to an equation to toggle its visibility.</li>
+          <li>Click the colour swatch next to an equation to select a different color.</li>
+          <li>Click 'Export' to save your equations for later, and restore them by clicking 'Import'.</li>
+        </ul>
+        <p>All equations must be of the form <span class="math">y=f(x)</span>.</p>
+        
+        <h3>Supported Operations, Constants, and Functions</h2>
+        <ul>
+          <li>Arithmetic operations: <span class="math">+, -, *, /, ^</span></li>
+          <li>Exponential constant: <span class="math">e</span></li>
+          <li>Pi: <span class="math">pi</span></li>
+          <li>Trigonometric functions: <span class="math">sin(x), cos(x), tan(x)</span></li>
+          <li>Inverse trigonometry: <span class="math">arcsin(x), arccos(x), arctan(x)</span></li>
+          <li>Logarithms: <span class="math">log(x, b), ln(x), log2(x), log10(x)</spanli>
+        </ul>
+        
+        <div class="popupControls">
+          <button id="btnHelpClose">Close</button>
+        </div>
+        
+      </div>
+      
+    </div>
+    
+    <!-- container for templates -->
+    <!-- elements are cloned from here and then populated before being
+      inserted elsewhere -->
+    <div class="hidden" id="ctnTemplates">
+      
+      <!-- an overlay element which can contain a popup to be displayed
+        in front of the rest of the UI -->
+      <div class="template" id="tplPopupOverlay">
+        
+        <div class="overlay"></div>
+        
+      </div>
+      
+      <div class="template" id="tplMessage">
+        
+        <div class="popup">
+          
+          <h1 class="txtMessageTitle"></h1>
+          <p class="txtMessageBody"></p>
+          
+          <div class="popupControls">
+            <button class="btnCloseMessage">OK</button>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+      <!-- popup for generic text input -->
+      <div class="template" id="tplTextInput">
+        
+        <div class="popup">
+          
+          <h1 class="txtTextInputTitle"></h1>
+          <p class="txtTextInputMessage"></p>
+          
+          <form class="frmTextInput">
+          
+            <input class="inpTextInput">
+            
+            <div class="popupControls">
+              <button type="submit" class="btnSubmitTextInput positive">Submit</button>
+            </div>
+          
+          </form>
+          
+        </div>
+        
+      </div>
+      
+      <!-- popup for generic multiple-choice input -->
+      <div class="template" id="tplChoiceInput">
+        
+        <div class="popup">
+          
+          <h1 class="txtChoiceInputTitle"></h1>
+          <p class="txtChoiceInputMessage"></p>
+          
+          <form class="frmChoiceInput">
+          
+            <select class="slcChoiceInput"></select>
+            
+            <div class="popupControls">
+              <button type="submit" class="btnSubmitChoiceInput positive">Submit</button>
+            </div>
+          
+          </form>
+          
+        </div>
+        
+      </div>
+      
+      <!-- list item to be inserted into #lstEquationList -->
+      <div class="template" id="tplEquationListItem">
+        
+        <li class="itmEquationListItem">
+          
+          <button class="btnRemoveEquation negative">
+            <img src="cross.png">
+          </button>
+          <input type="checkbox" class="chkEquationVisible">
+          <div class="swatch"></div>
+          <span class="equation"></span>
+          
+        </li>
+        
+      </div>
+      
+    </div>
+  
+  </body>
+  
+</html>
